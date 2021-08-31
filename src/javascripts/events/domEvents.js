@@ -9,6 +9,7 @@ import {
 } from '../helpers/data/authorData';
 import { showAuthors } from '../components/authors';
 import viewBook from '../components/viewBook';
+import viewAuthor from '../components/forms/viewAuthor';
 
 const domEvents = () => {
   document.querySelector('#main-container').addEventListener('click', (e) => {
@@ -136,6 +137,12 @@ const domEvents = () => {
         firebaseKey,
       };
       updateAuthor(authorObj).then(showAuthors);
+    }
+    if (e.target.id.includes('view-author-btn')) {
+      e.preventDefault();
+      const getKey = e.target.id.split('--');
+      const [, firebaseKey] = getKey;
+      getOneAuthor(firebaseKey).then(viewAuthor);
     }
   });
 };
