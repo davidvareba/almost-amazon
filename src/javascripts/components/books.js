@@ -1,8 +1,9 @@
-const showBooks = (array) => {
-  document.querySelector('#add-button').innerHTML = '<button class="btn btn-success btn-lg mb-4" id="add-book-btn">Add A Book</button>';
+import clearDom from '../helpers/data/clearDom';
 
-  document.querySelector('#store').innerHTML = '';
-  document.querySelector('#form-container').innerHTML = '';
+const showBooks = (array) => {
+  clearDom();
+
+  document.querySelector('#add-button').innerHTML = '<button class="btn btn-success btn-lg mb-4" id="add-book-btn">Add A Book</button>';
 
   array.forEach((item) => {
     document.querySelector('#store').innerHTML += `

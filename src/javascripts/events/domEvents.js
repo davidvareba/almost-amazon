@@ -8,6 +8,8 @@ import {
   createAuthor, deleteAuthor, updateAuthor, getOneAuthor, favAuthor
 } from '../helpers/data/authorData';
 import { showAuthors } from '../components/authors';
+import viewBook from '../components/viewBook';
+import viewAuthor from '../components/forms/viewAuthor';
 
 const domEvents = () => {
   document.querySelector('#main-container').addEventListener('click', (e) => {
@@ -32,6 +34,7 @@ const domEvents = () => {
         title: document.querySelector('#title').value,
         image: document.querySelector('#image').value,
         price: document.querySelector('#price').value,
+        description: document.querySelector('#description').value,
         sale: document.querySelector('#sale').checked,
         author_id: document.querySelector('#select-author').value
       };
@@ -61,6 +64,12 @@ const domEvents = () => {
       updateBook(bookObj).then(showBooks);
     }
 
+    if (e.target.id.includes('view-book-btn')) {
+      const [, firebaseKey] = e.target.id.split('--');
+
+      getSingleBook(firebaseKey).then(viewBook);
+    }
+
     // ADD CLICK EVENT FOR DELETING AN AUTHOR
     if (e.target.id.includes('delete-author')) {
       // eslint-disable-next-line no-alert
@@ -81,6 +90,7 @@ const domEvents = () => {
         first_name: document.querySelector('#first_name').value,
         last_name: document.querySelector('#last_name').value,
         email: document.querySelector('#email').value,
+        favorite: document.querySelector('#favorite').checked,
       };
       createAuthor(authorObj).then((authorsArray) => showAuthors(authorsArray));
     }
@@ -88,10 +98,10 @@ const domEvents = () => {
     // ADD CLICK EVENT FOR EDITING AN AUTHOR
     if (e.target.id.includes('edit-author')) {
       const [, id] = e.target.id.split('--');
-      getOneAuthor(id).then((authObj) => addAuthorForm(authObj));
+      getOneAuthor(id).then((authorObj) => addAuthorForm(authorObj));
     }
 
-    // TOGGLE FAVROITE AUTHOR
+    // TOGGLE FAVORITE AUTHOR
     if (e.target.id.includes('fav-author')) {
       e.preventDefault();
       const getKey = e.target.id.split('--');
@@ -114,7 +124,7 @@ const domEvents = () => {
       });
     }
 
-    // UPDATE AUTHOR
+    // EDITING AN AUTHOR
     if (e.target.id.includes('update-author')) {
       e.preventDefault();
       const getKey = e.target.id.split('--');
@@ -123,9 +133,16 @@ const domEvents = () => {
         first_name: document.querySelector('#first_name').value,
         last_name: document.querySelector('#last_name').value,
         email: document.querySelector('#email').value,
-        firebaseKey
+        favorite: document.querySelector('#favorite').checked,
+        firebaseKey,
       };
       updateAuthor(authorObj).then(showAuthors);
+    }
+    if (e.target.id.includes('view-author-btn')) {
+      e.preventDefault();
+      const getKey = e.target.id.split('--');
+      const [, firebaseKey] = getKey;
+      getOneAuthor(firebaseKey).then(viewAuthor);
     }
   });
 };
